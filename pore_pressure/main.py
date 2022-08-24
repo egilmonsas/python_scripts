@@ -4,9 +4,12 @@ import pandas as pd
 import numpy as np
 from bokeh.embed import components
 from bokeh.plotting import figure
-from bokeh.sampledata.stocks import AAPL
-
 import html_template
+
+TITLE="Poretrykksammenstilling";
+
+
+
 
 #Generate dummy data
 N=10000
@@ -23,5 +26,4 @@ p.line(x,y, color='navy', alpha=0.5)
 
 script, div = components(p)
 with open('plot.html', 'w') as f:
-    f.write(html_template.poretrykkdash.render(script=script, div=div)
-            )
+    f.write(html_template.poretrykkdash.render(doc_title=TITLE,script=script, div=div))
