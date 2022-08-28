@@ -34,5 +34,5 @@ p.line('Date_Time',"GWL", source=source, color='navy', alpha=0.5)
 
 script, div = components(p)
 with open('plot.html', 'w') as f:
-    f.write(env.get_template("piezometer_rapport").render(script=script, div=div)
+    f.write(env.get_template("piezometer_rapport").render(doc_title="gangster",script=script, div=div)
         )
