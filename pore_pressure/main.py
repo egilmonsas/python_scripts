@@ -1,27 +1,38 @@
 
-import jinja2
+from jinja2 import Environment, PackageLoader, select_autoescape
 import pandas as pd
 import numpy as np
 from bokeh.embed import components
 from bokeh.plotting import figure
-from bokeh.sampledata.stocks import AAPL
+from bokeh.models import ColumnDataSource
+from piezometer import PiezometerMetaData, PiezometerDataHandler
 
-import html_template
 
-#Generate dummy data
-N=10000
-x=np.linspace(0,1000,N)
-y=np.sin(x)+0.2*np.cos(0.2*x)
+env = Environment(
+    loader=PackageLoader('main', 'templates'),
+    autoescape=select_autoescape(['html'])
+)
+
+PIEZOMETERS = [
+    PiezometerMetaData("sample.pvt","Test",12.2)
+]
+
+data_handler = PiezometerDataHandler(piezomer_meta_data=PIEZOMETERS)
+data=data_handler.load_piezometer_data()
+
+source = ColumnDataSource.from_df(next(data)[1])
+
 
 p = figure(
     plot_height=250, 
     sizing_mode="stretch_width",
     x_axis_type="datetime",
-    output_backend="webgl"
+    output_backend="webgl",
+    tools=['hover']
     )
-p.line(x,y, color='navy', alpha=0.5)
+p.line('Date_Time',"GWL", source=source, color='navy', alpha=0.5)
 
 script, div = components(p)
 with open('plot.html', 'w') as f:
-    f.write(html_template.poretrykkdash.render(script=script, div=div)
-            )
+    f.write(env.get_template("piezometer_rapport").render(script=script, div=div)
+        )
