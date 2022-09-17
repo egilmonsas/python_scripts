@@ -11,3 +11,6 @@ Various math snippets that come up during day to day programming gets stored her
 
 ## pore_pressure
 An app for compiling pore-pressure reports from *.pvt* files for use in NGI.
+
+## stex
+Streamlit example
